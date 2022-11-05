@@ -61,5 +61,4 @@ EXPOSE 80
 
 # Make sure nginx does not run as a background daemon otherwise the container will start and then immediately exit
 CMD ["nginx", "-g", "daemon off;"]
-
->>>>>>> 79f36b8e41713d12bb46fe3df0715cf506115a2a
+ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
