@@ -1,29 +1,3 @@
-<<<<<<< HEAD
-# Stage 1: build npm app, alias it as build
-FROM node:17-alpine as build
-
-WORKDIR /app
-
-COPY package.json .
-RUN npm install
-
-COPY . .
-RUN npm run build
-
-# Stage 2: Copy the built react app from the /app/build folder of the aliases image
-# into the default nginx file location 
-
-FROM nginx:1.21.6-alpine
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Copy yhe required nginx configuration file and folder:
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-# CMD ["nginx", "-g", "daemon off;" ]
-ENTRYPOINT ["nginx", "-g", "daemon off;" ]
-=======
 #Multi-Stage Build
 # base image and alias it as 'build'
 FROM node:17-alpine as build 
@@ -45,12 +19,10 @@ RUN npm run build
 
 # 2nd stage of the multi-stage build
 # base image is nginx:1.21.6-alpine
-#  todo
+FROM nginx:1.21.6-alpine
 
 # copy the built react app from the /app/build folder of the aliased image
 # into the default nginx file location
-# todo
-FROM nginx:1.21.6-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 # copy the required nginx configuartion file and folder
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
@@ -59,6 +31,7 @@ COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 # todo
 EXPOSE 80
 
-# Make sure nginx does not run as a background daemon otherwise the container will start and then immediately exit
+# Make sure nginx does not run as a background daemon otherwise the container will
+ start and then immediately exit
 CMD ["nginx", "-g", "daemon off;"]
-ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
+# ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
